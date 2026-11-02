@@ -7,13 +7,26 @@ const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const eventRoutes = require("./routes/eventRoutes");
 const bookingRoutes = require("./routes/bookingRoutes");
-const aiRoutes = require("./routes/aiRoutes"); // NEW: AI Chatbot
+const aiRoutes = require("./routes/aiRoutes");
 
 const app = express();
 
+const allowedOrigins = [
+  "https://frontend-chi-seven-87.vercel.app", 
+  "http://localhost:5173",                     
+  "http://localhost:3000"                      
+];
+
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.indexOf(origin) !== -1 || process.env.CLIENT_URL) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
   })
 );
 
@@ -25,12 +38,9 @@ app.get("/", (req, res) => {
   });
 });
 
-// Existing routes — preserved
 app.use("/api/auth", authRoutes);
 app.use("/api/events", eventRoutes);
 app.use("/api/bookings", bookingRoutes);
-
-// New AI route
 app.use("/api/ai", aiRoutes);
 
 const PORT = process.env.PORT || 5000;
@@ -51,7 +61,7 @@ const startServer = async () => {
     await connectDB();
 
     app.listen(PORT, () => {
-      console.log(`Server running on http://localhost:${PORT}`);
+      console.log(`Server running on port ${PORT}`);
     });
   } catch (error) {
     console.error("Server startup failed:", error.message);
