@@ -159,7 +159,3 @@ Passionate about building real-world web applications using modern technologies 
 If you like this project, don't forget to give this repository a ⭐ on GitHub!
 
 🎟️ Making Event Booking Smarter, Simpler & Faster!
-
-If you like this project, don't forget to give this repository a ⭐ on GitHub!
-
-🎟️ Making Event Booking Smarter, Simpler & Faster!
